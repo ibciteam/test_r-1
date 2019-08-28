@@ -21,6 +21,7 @@ pipeline {
         echo env.GIT_REPO
         echo env.GITHUB_COMMIT
         echo env.CHANGE_ID
+        echo env.BRANCH_NAME
        }
        
     }
