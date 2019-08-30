@@ -1,11 +1,6 @@
 pipeline {
   agent {
-    // run this pipeline inside an docker image with node 8 and git installed
-    docker {
-      image 'node/8-alpine'
-      registryUrl 'https://registry.hub.docker.com'
-      registryCredentialsId 'dockerhub-bloxcicd' // the id of username/password credentials I have in Jenkins
-    }
+   label 'master'
   }
   environment {
     GOPATH = "$WORKSPACE"
