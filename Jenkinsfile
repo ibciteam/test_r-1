@@ -1,6 +1,11 @@
 pipeline {
   agent {
-    label 'master'
+    // run this pipeline inside an docker image with node 8 and git installed
+    docker {
+      image 'node/8-alpine'
+      registryUrl 'https://registry.hub.docker.com'
+      registryCredentialsId 'dockerhub-bloxcicd' // the id of username/password credentials I have in Jenkins
+    }
   }
   environment {
     GOPATH = "$WORKSPACE"
@@ -10,6 +15,15 @@ pipeline {
   }
 
   stages {
+    stage("JenkinsInitHasNoDocker") {
+      steps {
+        withCredentials([usernamePassword( credentialsId: 'dockerhub-bloxcicd', usernameVariable: 'DOCKER_USER', passwordVariable\
+: 'PASSWORD')]) {
+          sh "mkdir -p ${DOCKER_CONFIG}"
+          sh "echo ${PASSWORD} | docker login  -u ${DOCKER_USER} --password-stdin ${DOCKER_REGISTRY}"
+        }
+      }
+    }
     stage("First") {
      
       steps {
